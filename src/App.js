@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
+import ToDoItem from './components/ToDoItem';
+import Form from './components/Form';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = { todos: [
+    {title: "Todo first", content: "Do first"},
+    {title: "Todo second", content: "Do second"},
+    {title: "Todo third", content: "Do third"}
+  ]}
+
+  displayTodos = () => this.state.todos.map(todo => 
+    <ToDoItem key={todo.title} todo={todo} deleteItem={this.deleteItem}/>
+  )
+
+  addToDo = (todo) => {
+    this.setState({todos: [...this.state.todos, todo]})
+  }
+
+  deleteItem = (todo) => {
+    const todos = this.state.todos.filter(existingToDo => existingToDo !== todo)
+    this.setState({todos})
+  }
+
+
+  render() {
+    return (
+      <div className="App">
+        <Form addToDo={this.addToDo}/>
+        <h1>Hello World!</h1>
+        <div>{this.displayTodos()}</div>
+      </div>
+    )
+  }
 }
 
 export default App;
